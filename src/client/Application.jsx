@@ -1,20 +1,24 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {BrowserRouter, Link} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import {ProfilePage} from "./profilePage";
 import {fetchJson} from "./Http";
-import {useState} from "react";
+import {LoginPage} from './LoginPage'
 
 export const Application = () => {
 
     const[access_token, setAccess_token] = useState();
+
+    const googleIdentityProvider = {
+        discoveryURL :"https://accounts.google.com/.well-known/openid-configuration",
+        client_id :"889522382035-t4499kq70mdgk15liqi9lc7ilmb2lac7.apps.googleusercontent.com"
+    };
 
     const loadProfile = async () => {
         return fetchJson("/api/profile", {
             headers: {
               ...(access_token ? {Authorization : `Bearer ${access_token}`} : {}),
             }
-
         });
     }
     return <BrowserRouter>
@@ -30,7 +34,7 @@ export const Application = () => {
                 <ProfilePage loadProfile={loadProfile}/>
             </Route>
             <Route exact path={"/login"}>
-                <h1>Login</h1>
+                <LoginPage identityProvider={googleIdentityProvider}/>
             </Route>
             <Route path={"/login/callback"}>
                 <h1>Login callback</h1>
