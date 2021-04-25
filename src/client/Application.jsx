@@ -1,13 +1,29 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import {ProfilePage} from "./profilePage";
 import {fetchJson} from "./Http";
 import {LoginPage} from './LoginPage'
 import {LoginCallback} from "./LoginCallback";
 
+function useLocalStorage(key){
+    const[value, setValue] = useState( () => {
+        return JSON.parse(localStorage.getItem(key))
+    });
+
+    useEffect( () => {
+        if(value){
+            localStorage.setItem(key, JSON.stringify(value));
+        } else {
+            localStorage.removeItem(key);
+        }
+    }, [value])
+
+    return [value, setValue]
+}
+
 export const Application = () => {
 
-    const[access_token, setAccess_token] = useState();
+    const[access_token, setAccess_token] = useLocalStorage("access_token");
 
     const googleIdentityProvider = {
         discoveryURL:
@@ -22,6 +38,8 @@ export const Application = () => {
         client_id:
             "8732f2f7-9efb-4c1e-a92a-8b21ed32ade4"
     };
+
+
 
     const loadProfile = async () => {
         return fetchJson("/api/profile", {
