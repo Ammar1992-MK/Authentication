@@ -14,24 +14,27 @@ const discoveryURL = "https://accounts.google.com/.well-known/openid-configurati
     return await res.json();
 }
 
+app.use(async (req, res, next) => {
+    const authorization = req.header("Authorization");
+    if(authorization){
+        const {userinfo_endpoint} = await fetchJson(discoveryURL);
+        const userinfo = await fetchJson(userinfo_endpoint,{
+            headers:{
+                Authorization : authorization
+            }
+        });
+        req.userinfo = userinfo
+    }
+    next();
+})
+
 app.get("/api/profile",async (req, res, next) => {
-    const authorization = req.header("Authorization")
-    if(!authorization){
+    if(!req.userinfo){
         return res.send(401)
     }
 
-
-    const {userinfo_endpoint} = await fetchJson(discoveryURL);
-    const userinfo = await fetchJson(userinfo_endpoint,{
-        headers:{
-            Authorization : authorization
-        }
-    });
-
-    console.log(userinfo)
-
-    return res.json(userinfo)
-})
+    return res.json(req.userinfo)
+});
 
 
 
