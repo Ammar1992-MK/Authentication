@@ -16,6 +16,13 @@ export const Application = () => {
             "889522382035-5iac913i6aqsf92bm5goq8f6unu3b97d.apps.googleusercontent.com"
     };
 
+    const microsoftIdentityProvider = {
+        discoveryURL:
+            "https://login.microsoftonline.com/common/.well-known/openid-configuration",
+        client_id:
+            "8732f2f7-9efb-4c1e-a92a-8b21ed32ade4"
+    };
+
     const loadProfile = async () => {
         return fetchJson("/api/profile", {
             headers: {
@@ -36,10 +43,10 @@ export const Application = () => {
                 <ProfilePage loadProfile={loadProfile}/>
             </Route>
             <Route exact path={"/login"}>
-                <LoginPage identityProvider={googleIdentityProvider}/>
+                <LoginPage identityProvider={microsoftIdentityProvider}/>
             </Route>
             <Route path={"/login/callback"}>
-                <LoginCallback identityProvider={googleIdentityProvider} onAccessToken={access_token => setAccess_token(access_token)}/>
+                <LoginCallback identityProvider={microsoftIdentityProvider} onAccessToken={access_token => setAccess_token(access_token)}/>
             </Route>
             <Route>
                 <h1>404 not found</h1>

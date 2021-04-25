@@ -4,7 +4,8 @@ const path = require("path");
 const fetch = require("node-fetch");
 const app = express();
 
-const discoveryURL = "https://accounts.google.com/.well-known/openid-configuration";
+const googleDiscoveryURL = "https://accounts.google.com/.well-known/openid-configuration";
+const microsoftDiscoveryURL = "https://login.microsoftonline.com/common/.well-known/openid-configuration";
 
  async function fetchJson(url, options) {
     const res = await fetch(url, options);
@@ -17,7 +18,7 @@ const discoveryURL = "https://accounts.google.com/.well-known/openid-configurati
 app.use(async (req, res, next) => {
     const authorization = req.header("Authorization");
     if(authorization){
-        const {userinfo_endpoint} = await fetchJson(discoveryURL);
+        const {userinfo_endpoint} = await fetchJson(microsoftDiscoveryURL);
         const userinfo = await fetchJson(userinfo_endpoint,{
             headers:{
                 Authorization : authorization
