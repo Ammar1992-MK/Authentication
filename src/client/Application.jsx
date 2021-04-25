@@ -1,17 +1,19 @@
 import React, {useState} from 'react'
-import {BrowserRouter, Link} from "react-router-dom";
-import {Route, Switch} from "react-router";
+import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import {ProfilePage} from "./profilePage";
 import {fetchJson} from "./Http";
 import {LoginPage} from './LoginPage'
+import {LoginCallback} from "./LoginCallback";
 
 export const Application = () => {
 
     const[access_token, setAccess_token] = useState();
 
     const googleIdentityProvider = {
-        discoveryURL :"https://accounts.google.com/.well-known/openid-configuration",
-        client_id :"889522382035-t4499kq70mdgk15liqi9lc7ilmb2lac7.apps.googleusercontent.com"
+        discoveryURL:
+            "https://accounts.google.com/.well-known/openid-configuration",
+        client_id:
+            "889522382035-5iac913i6aqsf92bm5goq8f6unu3b97d.apps.googleusercontent.com"
     };
 
     const loadProfile = async () => {
@@ -37,7 +39,7 @@ export const Application = () => {
                 <LoginPage identityProvider={googleIdentityProvider}/>
             </Route>
             <Route path={"/login/callback"}>
-                <h1>Login callback</h1>
+                <LoginCallback identityProvider={googleIdentityProvider} onAccessToken={access_token => setAccess_token(access_token)}/>
             </Route>
             <Route>
                 <h1>404 not found</h1>

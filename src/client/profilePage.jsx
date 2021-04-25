@@ -2,7 +2,7 @@ import React from "react";
 import {useLoading} from "./useLoading";
 
 export const ProfilePage = ({loadProfile}) => {
-    const {loading, error, data} = useLoading(async() => {
+    const {error, loading, data} = useLoading(async() => {
         return await loadProfile()
     });
 
@@ -22,7 +22,7 @@ export const ProfilePage = ({loadProfile}) => {
     return (
         <div>
             <h1>Profile</h1>
-            <div>{data.username}</div>
+            <div>{data.name}</div>
         </div>
     );
 }
