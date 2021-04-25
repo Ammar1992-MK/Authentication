@@ -23,6 +23,9 @@ export const ProfilePage = ({loadProfile}) => {
         <div>
             <h1>Profile</h1>
             <div>{data.name}</div>
+            <div>
+                <img src={data.picture}/>
+            </div>
         </div>
     );
 }
